@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
 
-def plot_decision_regions(X, y, classifier, resolution=.02, x_label='', y_label='', ):
+def plot_decision_regions(X, y, classifier, resolution=.02, title='', x_label='', y_label='', test_idx=None):
     markers = ('s', 'x', 'o', '^', 'v')
     colors = ('red', 'blue', 'lightgreen', 'gray', 'cyan')
     cmap = ListedColormap(colors[:len(np.unique(y))])
@@ -21,6 +21,13 @@ def plot_decision_regions(X, y, classifier, resolution=.02, x_label='', y_label=
     for idx, cl in enumerate(np.unique(y)):
         cl_sample = X[y==cl]
         plt.scatter(x=cl_sample[..., 0], y=cl_sample[..., 1], alpha=.8, c=colors[idx], marker=markers[idx], label=cl, edgecolor='black')
+        
+    if isinstance(test_idx, (np.ndarray, list, tuple, range)):
+        X_test, y_test = X[test_idx], y[test_idx]
+        plt.scatter(x=X_test[..., 0], y=X_test[..., 1], alpha=1., c='', marker='o', label=y_test, edgecolor='black', s=100)
+    
+    if title:
+        plt.title(title)
     
     if x_label and y_label:
         plt.xlabel(x_label)
